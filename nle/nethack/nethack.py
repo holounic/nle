@@ -47,20 +47,20 @@ OBSERVATION_DESC = {
 
 
 NETHACKOPTIONS = (
-    "color",
-    "showexp",
     "autopickup",
-    "pickup_types:$?!/",
-    "pickup_burden:unencumbered",
-    "nobones",
-    "nolegacy",
-    "nocmdassist",
+    "color",
     "disclose:+i +a +v +g +c +o",
-    "runmode:teleport",
     "mention_walls",
+    "nobones",
+    "nocmdassist",
+    "nolegacy",
     "nosparkle",
+    "pickup_burden:unencumbered",
+    "pickup_types:$?!/",
+    "runmode:teleport",
     "showexp",
     "showscore",
+    "time",
 )
 
 HACKDIR = os.getenv("HACKDIR", pkg_resources.resource_filename("nle", "nethackdir"))

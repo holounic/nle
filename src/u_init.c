@@ -4,6 +4,8 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include "hack.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 struct trobj {
     short trotyp;
@@ -616,6 +618,11 @@ u_init()
     u.uz.dnum = u.uz0.dnum = 0;
     u.utotype = 0;
 #endif /* 0 */
+
+
+    char* s = getenv("DNUM");
+    printf("PATH :%s\n",(s!=NULL)? s : "getenv returned NULL");
+    printf("end test\n");
 
     u.uz.dlevel = 1;
     u.uz0.dlevel = 0;

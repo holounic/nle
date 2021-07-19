@@ -68,11 +68,12 @@ HACKDIR = os.getenv("HACKDIR", pkg_resources.resource_filename("nle", "nethackdi
 WIZKIT_FNAME = "wizkit.txt"
 
 
-def _set_env_vars(options, hackdir, wizkit=None):
+def _set_env_vars(options, hackdir, wizkit=None, dnum=0):
     # TODO: Investigate not using environment variables for this.
     os.environ["NETHACKOPTIONS"] = ",".join(options)
     os.environ["HACKDIR"] = hackdir
     os.environ["TERM"] = "ansi"
+    os.environ["DNUM"] = str(dnum)
     if wizkit is not None:
         os.environ["WIZKIT"] = os.path.join(hackdir, wizkit)
 
@@ -90,6 +91,7 @@ class Nethack:
         playername="Agent-mon-hum-neu-mal",
         ttyrec="nle.ttyrec.bz2",
         options=None,
+        dnum=0,
         copy=False,
         wizard=False,
         hackdir=HACKDIR,
@@ -123,6 +125,8 @@ class Nethack:
         dlpath = os.path.join(self._vardir, "libnethack.so")
         shutil.copyfile(DLPATH, dlpath)
 
+        self._dnum = dnum
+
         if options is None:
             options = NETHACKOPTIONS
         self._options = list(options) + ["name:" + playername]
@@ -130,7 +134,7 @@ class Nethack:
             self._options.append("playmode:debug")
         self._wizard = wizard
 
-        _set_env_vars(self._options, self._vardir)
+        _set_env_vars(self._options, self._vardir, dnum=self._dnum)
         if ttyrec is None:
             self._pynethack = _pynethack.Nethack(dlpath, spawn_monsters)
         else:
@@ -167,9 +171,11 @@ class Nethack:
             if not self._wizard:
                 raise ValueError("Set wizard=True to use the wizkit option.")
             self._write_wizkit_file(wizkit_items)
-            _set_env_vars(self._options, self._vardir, wizkit=WIZKIT_FNAME)
+            _set_env_vars(
+                self._options, self._vardir, wizkit=WIZKIT_FNAME, dnum=self._dnum
+            )
         else:
-            _set_env_vars(self._options, self._vardir)
+            _set_env_vars(self._options, self._vardir, dnum=self._dnum)
         if new_ttyrec is None:
             self._pynethack.reset()
         else:

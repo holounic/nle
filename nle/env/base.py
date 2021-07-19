@@ -216,6 +216,7 @@ class NLE(gym.Env):
         ),
         actions=None,
         options=None,
+        dnum=0,
         wizard=False,
         allow_all_yn_questions=False,
         allow_all_modes=False,
@@ -333,6 +334,7 @@ This might contain data that shouldn't be available to agents."""
             playername="Agent-" + self.character,
             ttyrec=ttyrec,
             wizard=wizard,
+            dnum=dnum,
             spawn_monsters=spawn_monsters,
         )
         self._close_env = weakref.finalize(self, self.env.close)

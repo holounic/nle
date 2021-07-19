@@ -615,14 +615,13 @@ u_init()
     u.uevent.udemigod = 0;              /* not a demi-god yet... */
     u.udg_cnt = 0;
     u.mh = u.mhmax = u.mtimedone = 0;
-    u.uz.dnum = u.uz0.dnum = 0;
     u.utotype = 0;
 #endif /* 0 */
 
-
-    char* s = getenv("DNUM");
-    printf("PATH :%s\n",(s!=NULL)? s : "getenv returned NULL");
-    printf("end test\n");
+    // get initial dungeon number from env variable
+    char* dnum = getenv("DNUM");
+    u.uz.dnum = u.uz0.dnum = (*dnum - '0');
+    printf("STARTING FROM DUNGEON LEVEL %d\n", u.uz.dnum);
 
     u.uz.dlevel = 1;
     u.uz0.dlevel = 0;

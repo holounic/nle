@@ -3,6 +3,8 @@ from gym.envs import registration
 
 from nle.env.base import NLE, DUNGEON_SHAPE
 
+ALL_KWARGS = {"playername": "Agent-mon-hum-neu-mal", "ttyrec": "nle.ttyrec.bz2", "options": None, "dnum": 0}
+
 registration.register(id="NetHack-v0", entry_point="nle.env.base:NLE")
 
 registration.register(id="NetHackScore-v0", entry_point="nle.env.tasks:NetHackScore")

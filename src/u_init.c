@@ -619,12 +619,19 @@ u_init()
 #endif /* 0 */
 
     // get initial dungeon number from env variable
-    char* dnum = getenv("DNUM");
-    u.uz.dnum = u.uz0.dnum = (*dnum - '0');
-    printf("STARTING FROM DUNGEON LEVEL %d\n", u.uz.dnum);
+    char* dnum_arr = getenv("DNUM");
+    int dnum;
+    sscanf(dnum_arr, "%d", &dnum);
+    u.uz.dnum = u.uz0.dnum = dnum;
 
-    u.uz.dlevel = 1;
-    u.uz0.dlevel = 0;
+    char* dlevel_arr = getenv("DLEVEL");
+    int dlevel;
+    sscanf(dlevel_arr, "%d", &dlevel);
+    u.uz.dlevel = dlevel;
+    u.uz0.dlevel = dlevel - 1;
+
+    printf("STARTING FROM DUNGEON NUMBER %d, DUNGEON LEVEL %d\n", u.uz.dnum, u.uz.dlevel);
+
     u.utolev = u.uz;
 
     u.umoved = FALSE;

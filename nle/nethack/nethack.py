@@ -68,12 +68,13 @@ HACKDIR = os.getenv("HACKDIR", pkg_resources.resource_filename("nle", "nethackdi
 WIZKIT_FNAME = "wizkit.txt"
 
 
-def _set_env_vars(options, hackdir, wizkit=None, dnum=0):
+def _set_env_vars(options, hackdir, wizkit=None, dnum=0, dlevel=1):
     # TODO: Investigate not using environment variables for this.
     os.environ["NETHACKOPTIONS"] = ",".join(options)
     os.environ["HACKDIR"] = hackdir
     os.environ["TERM"] = "ansi"
     os.environ["DNUM"] = str(dnum)
+    os.environ["DLEVEL"] = str(dlevel)
     if wizkit is not None:
         os.environ["WIZKIT"] = os.path.join(hackdir, wizkit)
 
@@ -92,6 +93,7 @@ class Nethack:
         ttyrec="nle.ttyrec.bz2",
         options=None,
         dnum=0,
+        dlevel=1,
         copy=False,
         wizard=False,
         hackdir=HACKDIR,
@@ -125,7 +127,9 @@ class Nethack:
         dlpath = os.path.join(self._vardir, "libnethack.so")
         shutil.copyfile(DLPATH, dlpath)
 
+        # Initial position
         self._dnum = dnum
+        self._dlevel = dlevel
 
         if options is None:
             options = NETHACKOPTIONS
@@ -134,7 +138,7 @@ class Nethack:
             self._options.append("playmode:debug")
         self._wizard = wizard
 
-        _set_env_vars(self._options, self._vardir, dnum=self._dnum)
+        _set_env_vars(self._options, self._vardir, dnum=self._dnum, dlevel=self._dlevel)
         if ttyrec is None:
             self._pynethack = _pynethack.Nethack(dlpath, spawn_monsters)
         else:
@@ -172,10 +176,10 @@ class Nethack:
                 raise ValueError("Set wizard=True to use the wizkit option.")
             self._write_wizkit_file(wizkit_items)
             _set_env_vars(
-                self._options, self._vardir, wizkit=WIZKIT_FNAME, dnum=self._dnum
+                self._options, self._vardir, wizkit=WIZKIT_FNAME, dnum=self._dnum, dlevel=self._dlevel
             )
         else:
-            _set_env_vars(self._options, self._vardir, dnum=self._dnum)
+            _set_env_vars(self._options, self._vardir, dnum=self._dnum, dlevel=self._dlevel)
         if new_ttyrec is None:
             self._pynethack.reset()
         else:
